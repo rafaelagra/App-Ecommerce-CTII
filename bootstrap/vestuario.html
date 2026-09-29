@@ -1,0 +1,108 @@
+<!DOCTYPE html> <!--declarei que o documento é HTML5-->
+<html lang="pt-BR"> <!--declarei que o idioma é português BR-->
+<head>
+    <meta charset="UTF-8"> <!--usei UTF-8 para que acentos como "Calça" e "Eletrônicos" apareçam certo-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--sem ele, o celular simula uma tela de desktop e encolhe tudo-->
+    <title>Minha Loja</title>
+
+    <!--importo o CSS do bootstrap pela CDN, no <head>-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+                crossorigin="anonymous">
+</head>
+
+<body class="bg-light"> <!--usei bg-light para deixar o fundo cinza bem claro e destacar os cards brancos-->
+
+    <!--
+    eu crio a barra da navegação. Uso:
+    - navbar-expand-lg: menu aberto a partir de 992px 
+    - navbar-dark + bg-primary: fundo azul com texto claro, para ter contraste
+    -fixed-top: a barra fica presa no topo mesmo quando eu rolo a página
+    -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+
+        <!--eu usei container-fluid para a barra ocupar 100% da largura em qualuqer tela-->
+        <div class="container-fluid">
+
+            <!--coloquei o nome da loja como "marca". Ao clicar, o usuário volta para a página inicial -->
+            <a class="navbar-brand" href="index.html">Minha Loja</a>
+
+            <!--botão hambúrguer. Ele só aparece abaixo de 992px
+            data-bs-toggle="collapse" diz ao JS do bootstrap que o botão abre e fecha algo
+            data-bs-target="#navbarNav" diz o que ele abre: o elemento com id="navbarNav"
+            -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- começa fechado (collapse) no celular
+             o id precisa ser identico ao data-bs-target do botão-->
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <!--usei ms-auto("margin start: auto") para empurrar os links para a direita-->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="vestuario.html">Vestuário</a></li>
+                    <li class="nav-item"><a class="nav-link" href="eletronicos.html">Eletrônicos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- coloquei o conteúdo dentro de um container, para ele ficar centralizado e com largura máxima
+     py-4da espaço interno em cima e embaixo. mt-5 empurra o conteúdo para baixo, porque a navbar fixed-top flutua por cima da página e cobriria o título
+    -->
+     <div class="container py-4 mt-5">
+        <h1 class="text-center mb-4">Vestuário</h1>
+
+        <!--
+        criei a "prateleira" de produtos com o grid do bootstrap
+        row-cols-1: no celular, 1 card por linha
+        rows-cols-md-3: a partir de 768px (md), 3 cards por linha
+        g-4: espaçamento entre os cards-->
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        <!--cada produto fica dentro de uma coluna (col). O grid distribui as colunas-->
+        <div class="col">
+            <!--transformei o card inteiro em um link, para o usuário poder tocar em qualquer parte dele.
+            h-100 deixa todos os cards da linha com a mesma altura
+            text-decoration-none e text-dark tiram o sublinhado e a cor azul de link-->
+            <a class="card h-100 text-decoration-none text-dark" href="camiseta.html">
+
+                <!--fixei a altura da imagem em 250px e usei o object-fit: contain para a foto caber inteira sem distorcer,
+                mesmo que as imagens tenham proporções diferentes. O alt descreve a imagem para leitores de tela-->
+                <img src="imagens/camiseta.jpg" class="card-img-top p-3" alt="Camiseta"
+                      style="height: 250px; object-fit: contain;">
+
+                <div class="card-body">
+                    <h5 class="card-title">Camiseta</h5>
+                    <p class="card-text">R$ 50,00</p>
+                </div>
+            </a>
+        </div>
+
+       <div class="col">
+            
+            <a class="card h-100 text-decoration-none text-dark" href="calca.html">
+
+                <img src="imagens/calca.jpg" class="card-img-top p-3" alt="Calça"
+                      style="height: 250px; object-fit: contain;">
+
+                <div class="card-body">
+                    <h5 class="card-title">Calça</h5>
+                    <p class="card-text">R$ 300,00</p>
+                </div>
+            </a>
+        </div>
+        </div> <!--fechei a row-->
+
+        </div> <!--fechei o container-->
+
+        <!--carreguei o JS do bootstrap no fim do <body> porque ele precisa que o HTML já exista para funcionar,
+        e assim não atrasa a exibição da página. Usei "bundle" porque ele já inclui o Popper.js. É esse JS que faz o botão hambúrguer abrir e fechar o menu-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
+</html>
