@@ -22,17 +22,18 @@
     <div class="container-fluid">
         <!-- usei onclick para chamar navegar() e mostrar a home ao clicar na marca.
         O cursor: pointer mostra a "mãozinha", indicando que é clicável-->
-        <span class="navbar-brand" onclick="navegar('tela-home')" style="cursor: pointer;">Minha Loja</span>
+        <span class="navbar-brand" onclick="carregarPorCategoria('todos')" style="cursor: pointer;">Minha Loja</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
            <span class="navbar-toggler-icon"></span> 
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <!--coloquei data-bs-toggle e data-bs-target no <ul> para o menu hambúrguer fechar sozinho depois que eu clico num item no celular-->
             <ul class="navbar-nav ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <!--troquei os links <a href=" " por <button>, pois não vou mais abrir outro arquivo: o clique só vai trocar a tela visível-->
-                <li class="nav-item"><button class="nav-link" onclick="navegar('tela-vestuario')">Vestuário</button></li>
-                <li class="nav-item"><button class="nav-link" onclick="navegar('tela-eletronicos')">Eletrônicos</button></li>
-                <li class="nav-item"><button class="nav-link" onclick="navegar('tela-contato')">Contato</button></li>
+                    <!-- Cada item chama a mesma função com uma categoria diferente da API-->
+                    <li class="nav-item"><button class="nav-link" onclick="carregarPorCategoria('men\'s clothing')">Vestuário</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="carregarPorCategoria('electronics')">Eletrônicos</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="carregarPorCategoria('jewelery')">Acessórios</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="navegar('tela-contato')">Contato</button></li>
             </ul>
         </div>
     </div>
@@ -47,60 +48,6 @@
         <div id="lista-produtos" class="row row-cols-1 row-cols-md-3 g-4">
         </div>
     </div><!--fechei a tela home-->
-
-    <!--TELA VESTUÁRIO. Começa com "collapse" (escondida)-->
-    <div id="tela-vestuario" class="tela collapse">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-
-            <div class="col">
-                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Camiseta', 'imagens/camiseta.jpg', 'Vestuário', '50,00', 'Uma camiseta básica de ótima qualidade para o uso casual no dia a dia.', 4.5, 1024)">
-                    <img src="imagens/camiseta.jpg" class="card-img-top p-3" alt="Camiseta" style="height: 250px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">Camiseta</h5>
-                        <p class="card-text">R$ 50,00</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Calça', 'imagens/calca.jpg', 'Vestuário', '300,00', 'Uma calça para jovem', 5.0, 7024)">
-                    <img src="imagens/calca.jpg" class="card-img-top p-3" alt="Calça" style="height: 250px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">Calça</h5>
-                        <p class="card-text">R$ 300,00</p>
-                    </div>
-                </div>
-            </div>
-
-        </div> <!--fechei a row de vestuário-->
-    </div> <!--fechei a tela-vestuario-->
-
-    <!--TELA ELETRÔNICOS (escondida)-->
-    <div id="tela-eletronicos" class="tela collapse">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-
-            <div class="col">
-                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Telefone', 'imagens/telefone.jpg', 'Eletrônicos', '850,00', 'Melhor preço, qualidade e garantia do Brasil.', 3.0, 124)">
-                    <img src="imagens/telefone.jpg" class="card-img-top p-3" alt="Telefone" style="height: 250px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">Telefone</h5>
-                        <p class="card-text">R$ 850,00</p>
-                    </div> 
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Teclado', 'imagens/teclado.jpg', 'Eletrônicos', '100,00', 'Teclado ABNT', 3.5, 622)">
-                    <img src="imagens/teclado.jpg" class="card-img-top p-3" alt="Teclado" style="height: 250px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">Teclado</h5>
-                        <p class="card-text">R$ 100,00</p>
-                    </div>
-                </div>
-            </div>
-
-        </div><!--fechei a row de eletrônicos-->
-    </div><!--fechei a tela-eletronicos-->
 
     <!--TELA CONTATO (escondida)-->
     <div id="tela-contato" class="tela collapse">

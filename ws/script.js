@@ -48,7 +48,7 @@ function navegar(destino) {
                 <div class="col-md-8">
                     <h2>${produto}</h2>
                     <p><strong>Categoria:</strong> ${categoria}</p>
-                    <p><strong>Preço:</strong> ${preco}</p>
+                    <p><strong>Preço:</strong> R$ ${preco}</p>
                     <p><strong>Descrição:</strong> ${descricao}</p>
                     <p><strong>Avaliação:</strong> ${nota.toFixed(1)} ⭐ (${avaliacoes} avaliações)</p>
                 </div>
@@ -58,9 +58,9 @@ function navegar(destino) {
 
     //============= PRODUTOS VINDO DA API =======================
 
-    //essa função busca os produtos da api e monta os cards na home
-    //usei "async" porque dentro dela vou esperar (await) a resposta da API que chega pela internet e demora um pouco
-    async function carregarProdutos() {
+    //essa função busca na API os produtos de uma categoria (ou todos) e monta a vitrine
+    //o parãmetro categoria permite usar a mesma função para todos os menus
+    async function carregarPorCategoria(categoria) {
 
         //peguei a área vazia da vitrine, onde os cards vão entrar
         const lista = document.getElementById('lista-produtos')
@@ -68,15 +68,20 @@ function navegar(destino) {
         //usei try/catch porque a requisição pode falhar(sem internet, API fora do ar)
         //se algo der errado dentro do try, o código pula para o catch em vez de quebrar
         try {
-            //faço um GET no endpoint que devolve TODOS os produtos
-            //o await pausa aquiaté a resposta chegar
-            const response = await axios.get('https://fakestoreapi.com/products')
+            //decidi qual endpoint chamar de acordo com a categoria recebida
+            let url
+            if(categoria === 'todos') {
+                url = 'https://fakestoreapi.com/products'
+            } else {
+                //uso template string para encaixar a categoria no final da URL
+                url = `https://fakestoreapi.com/products/category/${categoria}`
+            }
 
-            //o axios ja converte o JSON para mim. a lista de produtos fica em response.data
-            const produtos = response.data
+            const response = await axios.get(url)
+            const produtos = response.data 
 
             //limpo a vitrine antes de preencher, pra não duplicar cards
-            lista.innerHTMl = ''
+            lista.innerHTML = ''
 
             //percorro a lista e, para cada produto, crio um card
             produtos.forEach(produto => {
@@ -98,11 +103,15 @@ function navegar(destino) {
                 //coloco o card pronto dentro da vitrinwe
                 lista.appendChild(coluna)
             })
+
+            //depois de montar a vitrini, garanto que a tela home está visível
+            navegar('tela-home')
+
         } catch (error) {
             //se a API falhar,mostro o erro no console para conseguir investigar
             console.error('Erro ao carregar produtos:', error)
         }
     }
 
-    //chamo a função assim que o script carrega, para a home já abrir com os produtos
-    carregarProdutos()
+    //quando o app abre, carrega todos os produtos
+    carregarPorCategoria('todos')
