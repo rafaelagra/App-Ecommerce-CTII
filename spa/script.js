@@ -24,8 +24,34 @@ function navegar(destino) {
     telaAnterior = telaAtual
     telaAtual = destino
 }
-
+ 
 //essa função volta para a tela anterior, reaproveitando a função navegar
     function voltar() {
         navegar(telaAnterior)
+    }
+
+    //essa função mostra os detalhes de um produto. Em vez de ter um arquivo HTML para cada
+    function mostrarDetalhes(produto, imagem, categoria, preco, descricao, nota, avaliacoes) {
+
+        //primeiro eu troco para a tela de produto, reaproveitando a navegar()
+        navegar('tela-produto')
+
+        //pego a área vazia que deixei preparada no HTML para receber os detalhes
+        let detalhes = document.getElementById('detalhes-produto')
+
+        //preencho essa área com innerHTML
+        detalhes.innerHTML = `
+            <div class="row g-3">
+                <div class="col-md-4 text-center">
+                    <img src="${imagem}" class="img-fluid" alt="${produto}">
+                </div>
+                <div class="col-md-8">
+                    <h2>${produto}</h2>
+                    <p><strong>Categoria:</strong> ${categoria}</p>
+                    <p><strong>Preço:</strong> ${preco}</p>
+                    <p><strong>Descrição:</strong> ${descricao}</p>
+                    <p><strong>Avaliação:</strong> ${nota.toFixed(1)} ⭐ (${avaliacoes} avaliações)</p>
+                </div>
+            </div>
+        `
     }

@@ -44,7 +44,7 @@
 
             <div class="col">
                 <!--o card agora é uma <div> e não um link, porque não existe mais camiseta.html-->
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Camiseta', 'imagens/camiseta.jpg', 'Vestuário', '50,00', 'Uma camiseta básica de ótima qualidade para o uso casual no dia a dia.', 4.5, 1024)">
                     <img src="imagens/camiseta.jpg" class="card-img-top p-3" alt="Camiseta" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Camiseta</h5>
@@ -54,7 +54,7 @@
             </div>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Calça', 'imagens/calca.jpg', 'Vestuário', '300,00', 'Uma calça para jovem', 5.0, 7024)">
                     <img src="imagens/calca.jpg" class="card-img-top p-3" alt="Calça" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Calça</h5>
@@ -64,7 +64,7 @@
             </div>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Telefone', 'imagens/telefone.jpg', 'Eletrônicos', '850,00', 'Melhor preço, qualidade e garantia do Brasil.', 3.0, 124)">
                     <img src="imagens/telefone.jpg" class="card-img-top p-3" alt="Telefone" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Telefone</h5>
@@ -74,7 +74,7 @@
             </div>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Teclado', 'imagens/teclado.jpg', 'Eletrônicos', '100,00', 'Teclado ABNT', 3.5, 622)">
                     <img src="imagens/teclado.jpg" class="card-img-top p-3" alt="Teclado" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Teclado</h5>
@@ -91,7 +91,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Camiseta', 'imagens/camiseta.jpg', 'Vestuário', '50,00', 'Uma camiseta básica de ótima qualidade para o uso casual no dia a dia.', 4.5, 1024)">
                     <img src="imagens/camiseta.jpg" class="card-img-top p-3" alt="Camiseta" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Camiseta</h5>
@@ -101,7 +101,7 @@
             </div>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Calça', 'imagens/calca.jpg', 'Vestuário', '300,00', 'Uma calça para jovem', 5.0, 7024)">
                     <img src="imagens/calca.jpg" class="card-img-top p-3" alt="Calça" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Calça</h5>
@@ -118,7 +118,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Telefone', 'imagens/telefone.jpg', 'Eletrônicos', '850,00', 'Melhor preço, qualidade e garantia do Brasil.', 3.0, 124)">
                     <img src="imagens/telefone.jpg" class="card-img-top p-3" alt="Telefone" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Telefone</h5>
@@ -128,7 +128,7 @@
             </div>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100" style="cursor: pointer;" onclick="mostrarDetalhes('Teclado', 'imagens/teclado.jpg', 'Eletrônicos', '100,00', 'Teclado ABNT', 3.5, 622)">
                     <img src="imagens/teclado.jpg" class="card-img-top p-3" alt="Teclado" style="height: 250px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Teclado</h5>
@@ -153,8 +153,11 @@
         </div>
     </div><!--fechei a tela-contato-->
 
-    <!--TELA PRODUTO (escondida)-->
+        <!--TELA PRODUTO (escondida)-->
     <div id="tela-produto" class="tela collapse">
+        <!--usei voltar() para retornar à tela de onde o usuário veio (home ou categoria)-->
+        <button class="btn btn-secondary mb-3" onclick="voltar()">← Voltar</button>
+        <!-- Esta área começa vazia: a função mostrarDetalhes() preenche com innerHTML-->
         <div id="detalhes-produto" class="card shadow p-3">
         </div>
     </div><!--fechei a tela-produto-->
