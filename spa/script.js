@@ -48,7 +48,7 @@ function navegar(destino) {
                 <div class="col-md-8">
                     <h2>${produto}</h2>
                     <p><strong>Categoria:</strong> ${categoria}</p>
-                    <p><strong>Preço:</strong> ${preco}</p>
+                    <p><strong>Preço:</strong> R$ ${preco}</p>
                     <p><strong>Descrição:</strong> ${descricao}</p>
                     <p><strong>Avaliação:</strong> ${nota.toFixed(1)} ⭐ (${avaliacoes} avaliações)</p>
                 </div>
