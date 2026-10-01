@@ -4,6 +4,9 @@
 let telaAnterior = 'tela-home'
 let telaAtual = 'tela-home'
 
+//guardo a última categoria pedida, para o botão "tentar novamente" saber qual carregar
+let categoriaAtual = 'todos'
+
 //essa função troca a tela visível. O destino é o id da tela que eu quero mostrar
 function navegar(destino) {
     //pego todas as telas de uma vez pela classe "tela"
@@ -30,68 +33,92 @@ function navegar(destino) {
         navegar(telaAnterior)
     }
 
-    //essa função mostra os detalhes de um produto. Em vez de ter um arquivo HTML para cada
-    function mostrarDetalhes(produto, imagem, categoria, preco, descricao, nota, avaliacoes) {
+    //essa função abre os detalhes de um produto, buscando os dados na API pelo id
+    //passo só um id (um número) no onclick, e não o nome e a descrição, porque textos com apóstrofo (como men's) quebrariam o onclick
+    //e assim os dados vem sempre atualizados
+    async function abrirDetalhes(id) {
 
-        //primeiro eu troco para a tela de produto, reaproveitando a navegar()
+        const detalhes = document.getElementById('detalhes-produto')
+
+        //primeiro eu mostro a tela de produto e um aviso, porque a API demora um pouco para responder
         navegar('tela-produto')
+        detalhes.innerHTML = '<p class="text-center my-4">Carregando...</p>'
 
-        //pego a área vazia que deixei preparada no HTML para receber os detalhes
-        let detalhes = document.getElementById('detalhes-produto')
+        try {
+            //peço para a API só o produto com esse id
+            const response = await axios.get(`https://fakestoreapi.com/products/${id}`)
+            const p = response.data
 
-        //preencho essa área com innerHTML
-        detalhes.innerHTML = `
-            <div class="row g-3">
-                <div class="col-md-4 text-center">
-                    <img src="${imagem}" class="img-fluid" alt="${produto}">
+            //preencho a tela com as chaves do JSON que mapeei anteriormente
+            //a nota fica dentro de rating, por isso uso p.rating.rate e p.rating.count
+            detalhes.innerHTML = `
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        <img src="${p.image}" class="img-fluid" alt="${p.title}">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>${p.title}</h2>
+                        <p><strong>Categoria:</strong> ${p.category}</p>
+                        <p><strong>Preço:</strong> R$ ${p.price.toFixed(2)}</p>
+                        <p><strong>Descrição:</strong> ${p.description}</p>
+                        <p><strong>Avaliação:</strong> ${p.rating.rate.toFixed(1)} ⭐ (${p.rating.count} avaliações)</p>
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    <h2>${produto}</h2>
-                    <p><strong>Categoria:</strong> ${categoria}</p>
-                    <p><strong>Preço:</strong> R$ ${preco}</p>
-                    <p><strong>Descrição:</strong> ${descricao}</p>
-                    <p><strong>Avaliação:</strong> ${nota.toFixed(1)} ⭐ (${avaliacoes} avaliações)</p>
+            `
+        } catch (error) {
+            //se não conseguir buscar o produto, eu aviso o usuário na tela
+            //aqui posso passar o id direto no onclick porque ele é um número
+            console.error('Erro ao carregar detalhes:', error)
+            detalhes.innerHTML = `
+                <div class="alert alert-danger text-center m-0">
+                    <p class="mb-2">Não foi possível carregar este produto.</p>
+                    <button class="btn btn-danger" onclick="abrirDetalhes(${id})">Tente Novamente</button>
                 </div>
-            </div>
-        `
+            `
+        }
     }
 
     //============= PRODUTOS VINDO DA API =======================
 
     //essa função busca na API os produtos de uma categoria (ou todos) e monta a vitrine
-    //o parãmetro categoria permite usar a mesma função para todos os menus
+    //agora ela também avisa o usuário enquanto carrega e quando dá erro
     async function carregarPorCategoria(categoria) {
 
         //peguei a área vazia da vitrine, onde os cards vão entrar
         const lista = document.getElementById('lista-produtos')
 
-        //usei try/catch porque a requisição pode falhar(sem internet, API fora do ar)
-        //se algo der errado dentro do try, o código pula para o catch em vez de quebrar
+        //guardo qual categoria foi pedida, para poder tentar de novo se falhar
+        categoriaAtual = categoria
+
+        //primeiro mostro a vitrine e um spinner do bootstrap, porque a resposta demora um pouco
+        //o col-12 faz o aviso ocupar a linha inteira do grid
+        navegar('tela-home')
+        lista.innerHTML = `
+            <div class="col-12 text-center my-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Carregando produtos...</p>
+            </div>
+        `
+
         try {
-            //decidi qual endpoint chamar de acordo com a categoria recebida
-            let url
-            if(categoria === 'todos') {
+            let url 
+            if (categoria === 'todos') {
                 url = 'https://fakestoreapi.com/products'
             } else {
-                //uso template string para encaixar a categoria no final da URL
                 url = `https://fakestoreapi.com/products/category/${categoria}`
             }
 
             const response = await axios.get(url)
-            const produtos = response.data 
+            const produtos = response.data
 
-            //limpo a vitrine antes de preencher, pra não duplicar cards
+            //limpo a vitrine(tiro o spinner)antes de colocar os cards
             lista.innerHTML = ''
 
-            //percorro a lista e, para cada produto, crio um card
             produtos.forEach(produto => {
                 const coluna = document.createElement('div')
                 coluna.className = 'col'
-
-                //usei as chaves do JSON que mapeei anteriormente: title, price, image
-                //toFixed(2) garante sempre 2 casas decimais no preço
                 coluna.innerHTML = `
-                    <div class="card h-100">
+                    <div class="card h-100" style="cursor: pointer;" onclick="abrirDetalhes(${produto.id})">
                         <img src="${produto.image}" class="card-img-top p-3" alt="${produto.title}" style="height: 250px; object-fit: contain;">
                         <div class="card-body">
                             <h5 class="card-title">${produto.title}</h5>
@@ -100,18 +127,23 @@ function navegar(destino) {
                     </div>
                 `
 
-                //coloco o card pronto dentro da vitrinwe
                 lista.appendChild(coluna)
             })
-
-            //depois de montar a vitrini, garanto que a tela home está visível
-            navegar('tela-home')
-
         } catch (error) {
-            //se a API falhar,mostro o erro no console para conseguir investigar
+            //se a promessa for rejeitada (sem internet, API fora do ar), 
+            // eu continuo registrando no console para investigar, mas agora também aviso o usuário na tela,
+            //com um alerta vermelho do bootstrap e um botão para tentar de novo
             console.error('Erro ao carregar produtos:', error)
-        }
+            lista.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger text-center">
+                        <p class="mb-2">Não foi possível carregar os produtos. Verifique sua conexão.</p>
+                        <button class="btn btn-danger" onclick="carregarPorCategoria(categoriaAtual)">Tente Novamente</button>
+                    </div>
+                </div>
+            `
     }
+}
 
-    //quando o app abre, carrega todos os produtos
-    carregarPorCategoria('todos')
+//quando o app abre, carrega todos os produtos
+carregarPorCategoria('todos')
