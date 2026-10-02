@@ -147,3 +147,9 @@ function navegar(destino) {
 
 //quando o app abre, carrega todos os produtos
 carregarPorCategoria('todos')
+
+//====================== PWA: REGISTRO DO SERVICE WORKER ======================
+//verifico se o navegador suporta service worker. se suportar, eu registro o meu arquivo service-worker.js, e ele passa a funcionar em segundo plano
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+}
