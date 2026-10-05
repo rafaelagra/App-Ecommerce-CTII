@@ -37,6 +37,11 @@
                     <li class="nav-item"><button class="nav-link" onclick="carregarPorCategoria('electronics')">Eletrônicos</button></li>
                     <li class="nav-item"><button class="nav-link" onclick="carregarPorCategoria('jewelery')">Acessórios</button></li>
                     <li class="nav-item"><button class="nav-link" onclick="navegar('tela-contato')">Contato</button></li>
+                    <!--criei o item "instalar APP" escondido (collapse). Ele só aparece quando o navegador avisar que o app pode ser instalado (evento beforeinstallprompt)
+                    se o app já estiver instalado, o navegador não avisa e o botão fica escondido-->
+                    <li id="installAppBt" class="nav-item collapse">
+                        <button class="nav-link fw-bold" onclick="installApp()">Instalar APP</button>
+                    </li>
             </ul>
         </div>
     </div>

@@ -153,3 +153,36 @@ carregarPorCategoria('todos')
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
 }
+
+//==================== PWA: BOTÃO DE INSTALAÇÃO ============================
+
+//guardei aqui o "convite de instalação" que o navegador me entrega. começa vazio porque o navegador só entrega quando o app é instalável
+let pedidoInstalacao = null
+
+//o navegador dispara "beforeinstallprompt" quando o app pode ser instalado
+window.addEventListener('beforeinstallprompt', function (evento) {
+
+
+    //impedi o navegador de mostrar a sugestão de instalação dele na hora,porque quero que a instalação aconteça quando o usuário clicar no botão
+    evento.preventDefault()
+
+    //guardei o convite para usar depois, no clique
+    pedidoInstalacao = evento
+
+    //mostrei o item "instalar APP" no menu
+    document.getElementById('installAppBt').classList.add('show')
+})
+
+//essa função roda quando o usuário clica em "instalar APP"
+function installApp() {
+    //se eu tenho o convite guardado, eu abro a janela de inscrição do navegador
+    if(pedidoInstalacao) {
+        pedidoInstalacao.prompt()
+    }
+}
+
+//depois que o app é instalado, eu escondo o botão
+window.addEventListener('appinstalled', function () {
+    document.getElementById('installAppBt').classList.remove('show')
+    pedidoInstalacao = null
+})
