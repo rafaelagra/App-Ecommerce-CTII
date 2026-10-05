@@ -10,7 +10,7 @@ let categoriaAtual = 'todos'
 //essa função troca a tela visível. O destino é o id da tela que eu quero mostrar
 function navegar(destino) {
     //pego todas as telas de uma vez pela classe "tela"
-    //getElementsByClassName devolve uma coleção, e eu uso Array.from para tranformar em array e poder usar o forEach
+    //getElementsByClassName devolve uma coleção, e eu uso Array.from para transformar em array e poder usar o forEach
     let telas = document.getElementsByClassName('tela')
 
     //percorro cada tela e escondo todas: tiro "show" e coloco "collapse"
