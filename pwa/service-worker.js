@@ -1,5 +1,6 @@
 //dou um nome com versão ao meu cache. Se eu mudar algum arquivo do app no futuro,aumento a versão(v2,v3..) para os usuários receberem os arquivos novos
-const version = 1
+//assim o navegador cria um cache novo e o evento "activate" apaga o antigo
+const version = 2
 const cachename = 'app-cache-v' + version
 
 //essa é a lista de arquivos que eu guardo que eu guardo no cache logo na instalação
@@ -23,6 +24,20 @@ self.addEventListener('install', function (event) {
     )
 })
 
+//ATIVAÇÃO: roda quando este service worker novo assume o lugar do antigo
+//apago todos os caches que não tem o nome da são atual, porque o caches.match procura em todos os caches e poderia me entregar um arquivo velho do v1
+self.addEventListener('activate', function (event) {
+    event.waitUntil(
+        caches.keys().then(function (nomes) {
+            return Promise.all(
+                nomes
+                    .filter(function (nome) { return nome !== cachename })
+                    .map(function (nome) { return caches.delete(nome) })
+            )
+        })
+    )
+})
+
 //EXECUÇÃO: toda vez que o app pede qualuqer arquivo (html, js, imagem, dados da API), este evento "fetch" é disparado e eu decido de onde a resposta vem
 self.addEventListener('fetch', function (event) {
     event.respondWith(
@@ -35,14 +50,18 @@ self.addEventListener('fetch', function (event) {
 
             //se não encontrei, eu busco na internet
             return fetch(event.request).then(function (response) {
-                //e guardo uma cópia no cache para a próxima vez
-                //uso clone() porque a resposta só pode ser lida uma vez
-                //uma cópia vai para o cache e outra vai para o app
-                let responseClone = response.clone()
-                caches.open(cachename).then(function (cache) {
+               //só guardo no cache se a resposta for de sucesso (status 200 a 299)
+               //descobri isso quando a fakeStoreAPI caiu com erro 521: sem esse if eu guardaria o erro e o cache-first entregaria o erro para sempre
+               if (response.ok) {
+                    //uso clone() porque a resposta só pode ser lida uma vez
+                    //uma cópia vai para o cache e a outra vai para o app
+                    let responseClone = response.clone()
+                    caches.open(cachename).then(function (cache) {
                     cache.put(event.request, responseClone)
-                })
-                return response
+                    })
+               }
+               //entrego a resposta ao app mesmo quando é erro, para o meu try/catch mostrar o alerta vermelho
+               return response
 
             }).catch(function () {
                 //se não tem no cache e não tem internet, eu entrego a página principal guardada
